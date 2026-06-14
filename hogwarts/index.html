@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOGWARTS CASTLE // Architecture Blueprint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a14;
+            --surface: #12121f;
+            --border: #2a2a4a;
+            --gold: #ffd700;
+            --red: #ae0001;
+            --blue: #002147;
+            --green: #1a472a;
+            --purple: #740001;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--bg);
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 3px solid var(--gold);
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+        }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            color: var(--gold);
+            text-shadow: 0 0 30px var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+            letter-spacing: 5px;
+        }
+
+        .classification {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 30px;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            border-left: 4px solid var(--gold);
+            padding-left: 16px;
+            margin-bottom: 30px;
+        }
+
+        .blueprint-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gold);
+        }
+
+        .card h3 {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .card .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .card .stat span {
+            color: #888;
+        }
+
+        .card .stat strong {
+            color: var(--gold);
+        }
+
+        .schematic {
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a14 100%);
+            border: 2px solid var(--border);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .schematic svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .specs-table th,
+        .specs-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .specs-table th {
+            background: var(--surface);
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+        }
+
+        .specs-table td {
+            color: #aaa;
+        }
+
+        .specs-table tr:hover td {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .house-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .house-card {
+            padding: 20px;
+            text-align: center;
+            border: 2px solid;
+        }
+
+        .house-card.gryffindor { border-color: #ae0001; background: rgba(174, 0, 1, 0.2); }
+        .house-card.slytherin { border-color: #1a472a; background: rgba(26, 71, 42, 0.2); }
+        .house-card.ravenclaw { border-color: #002147; background: rgba(0, 33, 71, 0.2); }
+        .house-card.hufflepuff { border-color: #ecb939; background: rgba(236, 185, 57, 0.2); }
+
+        .house-card h4 {
+            font-family: 'Cinzel', serif;
+            margin-bottom: 8px;
+        }
+
+        .house-card.gryffindor h4 { color: #ae0001; }
+        .house-card.slytherin h4 { color: #1a472a; }
+        .house-card.ravenclaw h4 { color: #002147; }
+        .house-card.hufflepuff h4 { color: #ecb939; }
+
+        .house-card p {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .room-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .room-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .room-item h4 {
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .room-item p {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 2px solid var(--gold);
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .house-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>HOGWARTS</h1>
+        <div class="subtitle">SCHOOL OF WITCHCRAFT AND WIZARDRY</div>
+        <div class="classification">MINISTRY OF MAGIC // CLASSIFIED</div>
+    </div>
+
+    <div class="container">
+        <!-- Overview -->
+        <div class="section">
+            <h2 class="section-title">01 // OVERVIEW</h2>
+            <div class="blueprint-grid">
+                <div class="card">
+                    <h3>Designation</h3>
+                    <p>Hogwarts Castle is a magical fortress serving as the primary educational institution for young witches and wizards in Britain. Protected by countless enchantments and隐藏 from Muggles.</p>
+                    <div class="stat">
+                        <span>Status</span>
+                        <strong>OPERATIONAL</strong>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Location</h3>
+                    <p>Scottish Highlands, near the village of Hogsmeade. Protected by Fidelius Charm and Muggle-Repelling Charms. Cannot be plotted on any map.</p>
+                    <div class="stat">
+                        <span>Region</span>
+                        <strong>SCOTTISH HIGHLANDS</strong>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Founder</h3>
+                    <p>Founded in 990 AD by Godric Gryffindor, Helga Hufflepuff, Rowena Ravenclaw, and Salazar Slytherin. One of the oldest magical institutions.</p>
+                    <div class="stat">
+                        <span>Age</span>
+                        <strong>1,036 YEARS</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Specifications -->
+        <div class="section">
+            <h2 class="section-title">02 // ARCHITECTURAL SPECIFICATIONS</h2>
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Towers</td>
+                        <td>27</td>
+                        <td>Various heights and functions</td>
+                    </tr>
+                    <tr>
+                        <td>Floors</td>
+                        <td>7 Main + Sub-levels</td>
+                        <td>Unlimited magical expansion possible</td>
+                    </tr>
+                    <tr>
+                        <td>Staircases</td>
+                        <td>142</td>
+                        <td>Many are moving staircases</td>
+                    </tr>
+                    <tr>
+                        <td>Doors</td>
+                        <td>Unknown</td>
+                        <td>Some only appear when asked</td>
+                    </tr>
+                    <tr>
+                        <td>Windows</td>
+                        <td>Thousands</td>
+                        <td>Self-cleaning enchanted glass</td>
+                    </tr>
+                    <tr>
+                        <td>Rooms</td>
+                        <td>Unlimited</td>
+                        <td>Room of Requirement adjusts</td>
+                    </tr>
+                    <tr>
+                        <td>Fireplaces</td>
+                        <td>500+</td>
+                        <td>Floo Network connected</td>
+                    </tr>
+                    <tr>
+                        <td>Magical Protection</td>
+                        <td>Multiple Layers</td>
+                        <td>Fidelius, Anti-Muggle, etc.</td>
+                    </tr>
+                    <tr>
+                        <td>Capacity</td>
+                        <td>~1,000 Students</td>
+                        <td>Plus staff and ghosts</td>
+                    </tr>
+                    <tr>
+                        <td>Grounds</td>
+                        <td>~100 acres</td>
+                        <td>Includes forest, lake, Quidditch pitch</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Reference Image -->
+        <div class="section">
+            <h2 class="section-title">03 // REFERENCE IMAGE</h2>
+            <div class="schematic">
+                <img src="hogwarts-reference.png" alt="Hogwarts Reference" style="max-width: 100%; border: 2px solid var(--border); border-radius: 8px;">
+                <p style="color: #888; margin-top: 16px; font-size: 0.9rem;">Hogwarts Castle // Scottish Highlands</p>
+            </div>
+        </div>
+
+        <!-- Structural Schematic -->
+        <div class="section">
+            <h2 class="section-title">04 // STRUCTURAL SCHEMATIC</h2>
+            <div class="schematic">
+                <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" style="max-width: 700px;">
+                    <defs>
+                        <linearGradient id="castleGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" style="stop-color:#4a4a4a"/>
+                            <stop offset="100%" style="stop-color:#8a8a8a"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Background -->
+                    <rect width="800" height="500" fill="#0a0a14"/>
+
+                    <!-- Mountains -->
+                    <polygon points="0,400 100,300 200,380 300,250 400,350 500,280 600,320 700,260 800,350 800,500 0,500" fill="#1a1a2e"/>
+                    <polygon points="0,420 150,350 250,400 400,320 500,380 650,340 800,400 800,500 0,500" fill="#12121f"/>
+
+                    <!-- Lake -->
+                    <ellipse cx="200" cy="460" rx="150" ry="30" fill="#002147" opacity="0.5"/>
+
+                    <!-- Ground -->
+                    <rect x="0" y="440" width="800" height="60" fill="#1a472a" opacity="0.3"/>
+
+                    <!-- Castle Base -->
+                    <rect x="200" y="350" width="400" height="100" fill="url(#castleGrad)" stroke="#666" stroke-width="1"/>
+
+                    <!-- Main Hall -->
+                    <rect x="250" y="280" width="300" height="80" fill="url(#castleGrad)" stroke="#666" stroke-width="1"/>
+
+                    <!-- Great Hall Roof -->
+                    <polygon points="250,280 400,220 550,280" fill="#4a3728" stroke="#666" stroke-width="1"/>
+
+                    <!-- Windows on Great Hall -->
+                    <rect x="280" y="290" width="15" height="30" fill="#ffd700" opacity="0.6"/>
+                    <rect x="310" y="290" width="15" height="30" fill="#ffd700" opacity="0.5"/>
+                    <rect x="340" y="290" width="15" height="30" fill="#ffd700" opacity="0.7"/>
+                    <rect x="370" y="290" width="15" height="30" fill="#ffd700" opacity="0.4"/>
+                    <rect x="400" y="290" width="15" height="30" fill="#ffd700" opacity="0.6"/>
+                    <rect x="430" y="290" width="15" height="30" fill="#ffd700" opacity="0.5"/>
+                    <rect x="460" y="290" width="15" height="30" fill="#ffd700" opacity="0.6"/>
+                    <rect x="490" y="290" width="15" height="30" fill="#ffd700" opacity="0.4"/>
+
+                    <!-- Main Tower (Astronomy Tower) -->
+                    <rect x="370" y="100" width="60" height="180" fill="url(#castleGrad)" stroke="#666" stroke-width="1"/>
+                    <polygon points="370,100 400,60 430,100" fill="#4a3728"/>
+                    <circle cx="400" cy="55" r="5" fill="#ffd700">
+                        <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+
+                    <!-- Left Tower -->
+                    <rect x="200" y="200" width="50" height="150" fill="url(#castleGrad)" stroke="#666" stroke-width="1"/>
+                    <polygon points="200,200 225,160 250,200" fill="#4a3728"/>
+
+                    <!-- Right Tower -->
+                    <rect x="550" y="220" width="50" height="130" fill="url(#castleGrad)" stroke="#666" stroke-width="1"/>
+                    <polygon points="550,220 575,180 600,220" fill="#4a3728"/>
+
+                    <!-- Left Wing -->
+                    <rect x="120" y="300" width="80" height="150" fill="url(#castleGrad)" stroke="#666" stroke-width="1"/>
+                    <polygon points="120,300 160,260 200,300" fill="#4a3728"/>
+
+                    <!-- Right Wing -->
+                    <rect x="600" y="310" width="80" height="140" fill="url(#castleGrad)" stroke="#666" stroke-width="1"/>
+                    <polygon points="600,310 640,270 680,310" fill="#4a3728"/>
+
+                    <!-- Bridge -->
+                    <rect x="480" y="380" width="100" height="15" fill="#5a5a5a"/>
+                    <rect x="500" y="395" width="5" height="30" fill="#5a5a5a"/>
+                    <rect x="560" y="395" width="5" height="30" fill="#5a5a5a"/>
+
+                    <!-- Quidditch Pitch -->
+                    <ellipse cx="700" cy="420" rx="60" ry="25" fill="none" stroke="#1a472a" stroke-width="2"/>
+                    <rect x="640" y="390" width="3" height="40" fill="#5a5a5a"/>
+                    <rect x="760" y="390" width="3" height="40" fill="#5a5a5a"/>
+
+                    <!-- Forbidden Forest -->
+                    <g transform="translate(50, 380)">
+                        <polygon points="0,60 10,30 20,60" fill="#1a472a"/>
+                        <polygon points="20,60 30,20 40,60" fill="#1a472a"/>
+                        <polygon points="40,60 50,25 60,60" fill="#1a472a"/>
+                        <polygon points="60,60 70,35 80,60" fill="#1a472a"/>
+                    </g>
+
+                    <!-- Labels -->
+                    <g font-family="Cinzel, serif" font-size="10" fill="#ffd700">
+                        <text x="400" y="50" text-anchor="middle">ASTRONOMY TOWER</text>
+                        <text x="400" y="270" text-anchor="middle">GREAT HALL</text>
+                        <text x="225" y="250" text-anchor="middle">GRYFFINDOR TOWER</text>
+                        <text x="575" y="270" text-anchor="middle">RAVENCLAW TOWER</text>
+                        <text x="160" y="350" text-anchor="middle">LEFT WING</text>
+                        <text x="640" y="360" text-anchor="middle">RIGHT WING</text>
+                        <text x="530" y="410" text-anchor="middle">WOODEN BRIDGE</text>
+                        <text x="700" y="460" text-anchor="middle">QUIDDITCH PITCH</text>
+                        <text x="90" y="460" text-anchor="middle">FORBIDDEN FOREST</text>
+                        <text x="200" y="480" text-anchor="middle">BLACK LAKE</text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Houses -->
+        <div class="section">
+            <h2 class="section-title">05 // HOGWARTS HOUSES</h2>
+            <div class="house-grid">
+                <div class="house-card gryffindor">
+                    <h4>Gryffindor</h4>
+                    <p>Founder: Godric Gryffindor</p>
+                    <p>Values: Bravery, Courage</p>
+                    <p>Colors: Scarlet & Gold</p>
+                </div>
+                <div class="house-card slytherin">
+                    <h4>Slytherin</h4>
+                    <p>Founder: Salazar Slytherin</p>
+                    <p>Values: Cunning, Ambition</p>
+                    <p>Colors: Green & Silver</p>
+                </div>
+                <div class="house-card ravenclaw">
+                    <h4>Ravenclaw</h4>
+                    <p>Founder: Rowena Ravenclaw</p>
+                    <p>Values: Wisdom, Creativity</p>
+                    <p>Colors: Blue & Bronze</p>
+                </div>
+                <div class="house-card hufflepuff">
+                    <h4>Hufflepuff</h4>
+                    <p>Founder: Helga Hufflepuff</p>
+                    <p>Values: Loyalty, Hard Work</p>
+                    <p>Colors: Yellow & Black</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Locations -->
+        <div class="section">
+            <h2 class="section-title">06 // KEY LOCATIONS</h2>
+            <div class="room-list">
+                <div class="room-item">
+                    <h4>🏰 Great Hall</h4>
+                    <p>Central dining hall with enchanted ceiling. Houses 4 house tables and staff table.</p>
+                </div>
+                <div class="room-item">
+                    <h4>📚 Library</h4>
+                    <p>Over 10,000 books. Restricted Section requires teacher permission.</p>
+                </div>
+                <div class="room-item">
+                    <h4>🔮 Divination Classroom</h4>
+                    <p>Located in North Tower. Professor Trelawney's domain.</p>
+                </div>
+                <div class="room-item">
+                    <h4>🧪 Potions Dungeon</h4>
+                    <p>Underground chambers. Cold, damp, and full of mysterious ingredients.</p>
+                </div>
+                <div class="room-item">
+                    <h4>🚪 Chamber of Secrets</h4>
+                    <p>Hidden chamber beneath school. Contains Basilisk. Founded by Salazar Slytherin.</p>
+                </div>
+                <div class="room-item">
+                    <h4>⭐ Room of Requirement</h4>
+                    <p>Appears only when needed. Contains anything the requester requires.</p>
+                </div>
+                <div class="room-item">
+                    <h4>🐈 Headmaster's Office</h4>
+                    <p>Contains Sorting Hat, Pensieve, and Fawkes the Phoenix.</p>
+                </div>
+                <div class="room-item">
+                    <h4>🏓 Quidditch Pitch</h4>
+                    <p>30 meter tall goal posts. Field length: 150m x 60m.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Magical Systems -->
+        <div class="section">
+            <h2 class="section-title">07 // MAGICAL PROTECTION SYSTEMS</h2>
+            <div class="blueprint-grid">
+                <div class="card">
+                    <h3>🔮 Fidelius Charm</h3>
+                    <p>Hides the castle's location within a secret keeper. Cannot be found unless the secret is revealed.</p>
+                    <div class="stat">
+                        <span>Power Level</span>
+                        <strong>EXTREME</strong>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🛡️ Anti-Muggle Charms</h3>
+                    <p>Muggles see only ruins and a sign warning them away. Cannot perceive the castle.</p>
+                    <div class="stat">
+                        <span>Radius</span>
+                        <strong>~5 MILES</strong>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>⚡ Unplottable</h3>
+                    <p>Castle cannot be plotted on any map. Does not exist in non-magical cartography.</p>
+                    <div class="stat">
+                        <span>Effect</span>
+                        <strong>ABSOLUTE</strong>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🏰 Ward Shields</h3>
+                    <p>Multiple defensive barriers. Repels dark magic and hostile creatures.</p>
+                    <div class="stat">
+                        <span>Strength</span>
+                        <strong>LEGENDARY</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>HOGWARTS CASTLE BLUEPRINT // MINISTRY OF MAGIC // CLASSIFIED</p>
+        <p>"Hogwarts is there to welcome the new wizard on their very first step into a larger and better world." - Albus Dumbledore</p>
+    </div>
+</body>
+</html>
