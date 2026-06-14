@@ -6,6 +6,7 @@ Technical and conceptual blueprints across real-life systems, speculative design
 
 | Blueprint | Description | Live |
 |-----------|-------------|------|
+| [Gundam RX-78](./gundam-rx78) | Federation Mobile Suit blueprint | [View](https://shgfx10.github.io/Blueprints/gundam-rx78/) |
 | [Citadel of Ricks](./citadel) | Rick and Morty Citadel architecture | [View](https://shgfx10.github.io/Blueprints/citadel/) |
 | [Albatross](./albatross) | Wandering Albatross biological blueprint | [View](https://shgfx10.github.io/Blueprints/albatross/) |
 
